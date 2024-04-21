@@ -67,9 +67,12 @@ export async function run(): Promise<void> {
 
     const thumbnailUrl = core.getInput('thumbnail-url', { required: false })
 
-    const notificationRole = core.getInput('notification-role-id', {
+    let notificationRole = core.getInput('notification-role-id', {
       required: false
     })
+    if (notificationRole === '') {
+      notificationRole = '918884941461352469'
+    }
 
     const description: string[] = [`# ${projectName} ${version}`, '']
 
