@@ -1,23 +1,41 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Discord Release'
+description:
+  'Posts a message to a Discord webhook with links to GitHub, Curseforge and
+  Modrinth projects'
+author: 'Up'
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: 'heart'
-  color: 'red'
+  icon: 'message-square'
+  color: 'blue'
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  modrinth-project-id:
+    description: 'The project ID on Modrinth to link to'
+    required: false
+  curseforge-project-id:
+    description: 'The project ID on CurseForge to link to'
+  repository:
+    description: 'The source repository to link to'
+    required: false
+  project-name:
+    description: 'The name of the project'
+    required: false
+  version:
+    description: 'The display version'
+    required: false
+  webhook-url:
+    description: 'The webhook URL to send the message to'
     required: true
-    default: '1000'
+  thumbnail-url:
+    description: 'The URL of the thumbnail to use'
+    required: false
+  notification-role-id:
+    description: 'The role ID to ping'
+    required: false
 
-# Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
+  message:
+    description: 'The message that was sent to the webhook'
 
 runs:
   using: node20
