@@ -67,6 +67,8 @@ export async function run(): Promise<void> {
 
     const thumbnailUrl = core.getInput('thumbnail-url', { required: false })
 
+    let shouldPingRole = 'false' !== (core.getInput('ping-notification-role', { required: false }) || 'true').toLowerCase();
+
     let notificationRole = core.getInput('notification-role-id', {
       required: false
     })
@@ -129,7 +131,7 @@ export async function run(): Promise<void> {
     core.setOutput('message', result)
 
     // ping the announcements role
-    if (notificationRole) {
+    if (shouldPingRole && notificationRole) {
       core.debug(`Pinging role ${notificationRole}`)
       await webhook.send({
         ...avatar,
