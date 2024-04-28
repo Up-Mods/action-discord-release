@@ -30,9 +30,8 @@ inputs:
     description: 'The URL of the thumbnail to use'
     required: false
   ping-notification-role:
-    description: 'Whether to ping the notification role'
+    description: 'Whether to ping the notification role, by default will only ping if the version is not a pre-release'
     required: false
-    default: 'true'
   notification-role-id:
     description: 'The role ID to ping'
     required: false
