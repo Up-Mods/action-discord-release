@@ -67,18 +67,20 @@ export async function run(): Promise<void> {
 
     const thumbnailUrl = core.getInput('thumbnail-url', { required: false })
 
-    const shouldPingRoleValue = core.getInput('ping-notification-role', { required: false });
-    let shouldPingRole = false;
+    const shouldPingRoleValue = core.getInput('ping-notification-role', {
+      required: false
+    })
+    let shouldPingRole = false
     if (shouldPingRoleValue === '') {
-      shouldPingRole = !(/[+-_]alpha/i).test(version)
-        && !(/[_+-]beta/i).test(version)
-        && !(/[_+-]rc.*/i).test(version)
-        && !(/[_+-]pre-?(release)?/i).test(version)
-        && !(/[_+-]snapshot.*/i).test(version)
-        && !(/[_+-]dev.*/i).test(version);
-    }
-    else {
-      shouldPingRole = shouldPingRoleValue !== 'false';
+      shouldPingRole =
+        !/[+-_]alpha/i.test(version) &&
+        !/[_+-]beta/i.test(version) &&
+        !/[_+-]rc.*/i.test(version) &&
+        !/[_+-]pre-?(release)?/i.test(version) &&
+        !/[_+-]snapshot.*/i.test(version) &&
+        !/[_+-]dev.*/i.test(version)
+    } else {
+      shouldPingRole = shouldPingRoleValue !== 'false'
     }
 
     let notificationRole = core.getInput('notification-role-id', {
