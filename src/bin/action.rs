@@ -20,6 +20,7 @@ use twilight_util::builder::embed::{EmbedBuilder, ImageSource};
 use twilight_util::link::webhook;
 
 #[derive(Debug, Parser)]
+#[clap(version, about, author)]
 struct Inputs {
     #[clap(long = "modrinth-project-id")]
     modrinth_project_id: String,
