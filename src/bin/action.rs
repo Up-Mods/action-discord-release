@@ -12,8 +12,8 @@ use twilight_http::request::TryIntoRequest;
 use twilight_http::response::marker::EmptyBody;
 use twilight_http::Response;
 use twilight_mention::Mention;
-use twilight_model::id::Id;
 use twilight_model::id::marker::RoleMarker;
+use twilight_model::id::Id;
 use twilight_model::util::Timestamp;
 use twilight_util::builder::embed::{EmbedBuilder, ImageSource};
 use twilight_util::link::webhook;
@@ -139,7 +139,6 @@ async fn wrapped_main() -> anyhow::Result<()> {
         writeln!(out, "EOF")?;
     }
 
-
     if args.discord_ping_notification_role {
         info!("Pinging notification role");
 
@@ -148,7 +147,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
             role_str = "918884941461352469".to_string();
         }
         if role_str.starts_with("<@&") {
-            role_str = role_str[3..role_str.len()-1].to_string();
+            role_str = role_str[3..role_str.len() - 1].to_string();
         }
 
         let role_id: Id<RoleMarker> = role_str.parse()?;
