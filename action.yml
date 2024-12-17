@@ -48,7 +48,7 @@ outputs:
 
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/up-mods/action-discord-release:v0'
+  image: 'docker://ghcr.io/up-mods/action-discord-release:main'
   args:
     - "--modrinth-project-id=${{ inputs.modrinth-project-id }}"
     - "--curseforge-project-id=${{ inputs.modrinth-project-id }}"

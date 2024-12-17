@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    tags:
-      - '*'
+    tags: ["*"]
+    branches: ["main"]
 
 env:
   VERSION: ${{ github.ref_name }}
