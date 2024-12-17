@@ -115,6 +115,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
         .description(description.join("\n"));
 
     if !args.discord_thumbnail_url.is_empty() {
+        info!("Adding thumbnail to embed: {}", args.discord_thumbnail_url);
         embed_builder =
             embed_builder.thumbnail(ImageSource::url(args.discord_thumbnail_url.as_str())?);
     }
