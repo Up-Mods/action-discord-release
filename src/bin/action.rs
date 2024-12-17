@@ -29,7 +29,7 @@ struct Inputs {
     curseforge_project_id: String,
 
     #[clap(long = "project-name")]
-    project_name: Option<String>,
+    project_name: String,
     #[clap(long = "project-version")]
     project_version: String,
     #[clap(long = "project-repository")]
@@ -88,12 +88,16 @@ async fn wrapped_main() -> anyhow::Result<()> {
         )
     })?;
 
+    let project_name = if args.project_name.is_empty() {
+        repo_name
+    } else {
+        &args.project_name
+    };
+
+    let project_version = args.project_version;
+
     let mut description = vec![
-        format!(
-            "# {project_name} {project_version}",
-            project_name = args.project_name.unwrap_or(repo_name.to_string()),
-            project_version = args.project_version
-        ),
+        format!("# {project_name} {project_version}",),
         String::new(),
     ];
     if !args.curseforge_project_id.is_empty() || !args.modrinth_project_id.is_empty() {
@@ -149,7 +153,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
 
     let should_ping_role: bool = if args.discord_ping_notification_role.is_empty() {
         // default: analyze version and don't ping if it's a pre-release
-        !regex.is_match(args.project_version.as_str())
+        !regex.is_match(project_version.as_str())
     } else {
         // treat any value other than "false" as true
         !args
