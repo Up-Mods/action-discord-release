@@ -118,11 +118,14 @@ async fn wrapped_main() -> anyhow::Result<()> {
 
     let embeds = vec![embed_builder.build()];
 
+    const WEBHOOK_AVATAR_URL: &str = "https://avatars.githubusercontent.com/u/141473891?s=256";
+    const WEBHOOK_USERNAME: &str = "Mod Updates";
+
     info!("Sending webhook message to Discord");
     let request = client
         .execute_webhook(id, token)
-        .avatar_url("https://avatars.githubusercontent.com/u/141473891?s=256")
-        .username("Mod Updates")?
+        .avatar_url(WEBHOOK_AVATAR_URL)
+        .username(WEBHOOK_USERNAME)?
         .embeds(&embeds)?
         .try_into_request()?;
 
@@ -153,6 +156,8 @@ async fn wrapped_main() -> anyhow::Result<()> {
         let role_id: Id<RoleMarker> = role_str.parse()?;
         client
             .execute_webhook(id, token)
+            .avatar_url(WEBHOOK_AVATAR_URL)
+            .username(WEBHOOK_USERNAME)?
             .content(role_id.mention().to_string().as_str())?
             .await?;
     }
