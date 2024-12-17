@@ -36,4 +36,4 @@ ENV RUST_LOG=${RUST_LOG:-info}
 
 COPY --from=builder /app/target/release/action .
 
-ENTRYPOINT ["./action"]
+ENTRYPOINT ["/action"]
