@@ -1,0 +1,15 @@
+[package]
+name = "action-discord-release"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.94"
+clap = { version = "4.5.23", features = ["derive"] }
+tracing = { version = "0.1.41", features = ["async-await"] }
+twilight-http = { version = "0.15.4", default-features = false, features = ["rustls-webpki-roots", "decompression"] }
+twilight-model = "0.15.4"
+twilight-util = { version = "0.15.4", features = ["builder", "link"] }
+tokio = { version = "1.42.0", features = ["full"] }
+tracing-subscriber = { version = "0.3.19", features = ["env-filter", "serde", "serde_json", "chrono"] }
+chrono = { version = "0.4.39", features = ["serde"] }
+twilight-mention = "0.15.3"

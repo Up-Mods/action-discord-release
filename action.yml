@@ -17,12 +17,14 @@ inputs:
   repository:
     description: 'The source repository to link to'
     required: false
+    default: '${{ github.repository }}'
   project-name:
     description: 'The name of the project'
     required: false
   version:
     description: 'The display version'
     required: false
+    default: '${{ github.ref_name }}'
   webhook-url:
     description: 'The webhook URL to send the message to'
     required: true
@@ -41,7 +43,19 @@ inputs:
 outputs:
   message:
     description: 'The message that was sent to the webhook'
+  response_status:
+    description: 'The status code received from the webhook'
 
 runs:
-  using: node20
-  main: dist/index.js
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - "--modrinth-project-id='${{ inputs.modrinth-project-id }}'"
+    - "--curseforge-project-id='${{ inputs.modrinth-project-id }}'"
+    - "--project-name='${{ inputs.project-name }}'"
+    - "--project-version='${{ inputs.version }}'"
+    - "--project-repository='${{ inputs.repository }}'"
+    - "--discord-webhook-url='${{ inputs.webhook-url }}'"
+    - "--discord-thumbnail-url='${{ inputs.thumbnail-url }}'"
+    - "--discord-notification-role-id='${{ inputs.notification-role-id }}'"
+    - "--discord-ping-notification-role='${{ inputs.ping-notification-role }}'"
