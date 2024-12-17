@@ -5,7 +5,7 @@ use regex::Regex;
 use std::fs::File;
 use std::io::Write;
 use std::{env, process};
-use tracing::{error, info};
+use tracing::{debug, error, info};
 use tracing_subscriber::prelude::*;
 use tracing_subscriber::{fmt, EnvFilter};
 use twilight_http::client::ClientBuilder;
@@ -115,7 +115,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
         .description(description.join("\n"));
 
     if !args.discord_thumbnail_url.is_empty() {
-        info!("Adding thumbnail to embed: {}", args.discord_thumbnail_url);
+        debug!("Adding thumbnail to embed: {}", args.discord_thumbnail_url);
         embed_builder =
             embed_builder.thumbnail(ImageSource::url(args.discord_thumbnail_url.as_str())?);
     }

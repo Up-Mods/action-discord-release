@@ -50,12 +50,12 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - "--modrinth-project-id='${{ inputs.modrinth-project-id }}'"
-    - "--curseforge-project-id='${{ inputs.modrinth-project-id }}'"
-    - "--project-name='${{ inputs.project-name }}'"
-    - "--project-version='${{ inputs.version }}'"
-    - "--project-repository='${{ inputs.repository }}'"
-    - "--discord-webhook-url='${{ inputs.webhook-url }}'"
-    - "--discord-thumbnail-url='${{ inputs.thumbnail-url }}'"
-    - "--discord-notification-role-id='${{ inputs.notification-role-id }}'"
-    - "--discord-ping-notification-role='${{ inputs.ping-notification-role }}'"
+    - "--modrinth-project-id=${{ inputs.modrinth-project-id }}"
+    - "--curseforge-project-id=${{ inputs.modrinth-project-id }}"
+    - "--project-name=${{ inputs.project-name }}"
+    - "--project-version=${{ inputs.version }}"
+    - "--project-repository=${{ inputs.repository }}"
+    - "--discord-webhook-url=${{ inputs.webhook-url }}"
+    - "--discord-thumbnail-url=${{ inputs.thumbnail-url }}"
+    - "--discord-notification-role-id=${{ inputs.notification-role-id }}"
+    - "--discord-ping-notification-role=${{ inputs.ping-notification-role }}"
