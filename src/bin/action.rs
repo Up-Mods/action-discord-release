@@ -1,6 +1,7 @@
 use anyhow::Context;
 use chrono::Utc;
 use clap::Parser;
+use regex::Regex;
 use std::fs::File;
 use std::io::Write;
 use std::{env, process};
@@ -39,8 +40,8 @@ struct Inputs {
     discord_thumbnail_url: String,
     #[clap(long = "discord-notification-role-id")]
     discord_notification_role_id: String,
-    #[clap(long = "discord-ping-notification-role", default_value = "true", action = clap::ArgAction::Set)]
-    discord_ping_notification_role: bool,
+    #[clap(long = "discord-ping-notification-role")]
+    discord_ping_notification_role: String,
 }
 
 #[tokio::main]
@@ -65,6 +66,8 @@ async fn wrapped_main() -> anyhow::Result<()> {
     let github_output_path =
         env::var("GITHUB_OUTPUT").expect("GITHUB_OUTPUT environment variable not set");
     let args = Inputs::parse();
+
+    let regex = Regex::new(r"[-+_](alpha)|(beta)|(rc)|(pre-?(release)?)|(snapshot)|(dev).*")?;
 
     let (id, token) = webhook::parse(args.discord_webhook_url.as_str())
         .with_context(|| format!("Failed to parse webhook URL: {}", args.discord_webhook_url))?;
@@ -142,7 +145,17 @@ async fn wrapped_main() -> anyhow::Result<()> {
         writeln!(out, "EOF")?;
     }
 
-    if args.discord_ping_notification_role {
+    let should_ping_role: bool = if args.discord_ping_notification_role.is_empty() {
+        // default: analyze version and don't ping if it's a pre-release
+        !regex.is_match(args.project_version.as_str())
+    } else {
+        // treat any value other than "false" as true
+        !args
+            .discord_ping_notification_role
+            .eq_ignore_ascii_case("false")
+    };
+
+    if should_ping_role {
         info!("Pinging notification role");
 
         let mut role_str = args.discord_notification_role_id;
