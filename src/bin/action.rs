@@ -5,6 +5,8 @@ use regex::Regex;
 use std::fs::File;
 use std::io::Write;
 use std::{env, process};
+use std::time::Duration;
+use tokio::time::sleep;
 use tracing::{debug, error, info};
 use tracing_subscriber::prelude::*;
 use tracing_subscriber::{fmt, EnvFilter};
@@ -162,6 +164,9 @@ async fn wrapped_main() -> anyhow::Result<()> {
     };
 
     if should_ping_role {
+        info!("Waiting 5 seconds before pinging notification role");
+        sleep(Duration::from_secs(5)).await;
+
         info!("Pinging notification role");
 
         let mut role_str = args.discord_notification_role_id;
