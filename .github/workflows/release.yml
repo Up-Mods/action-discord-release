@@ -8,6 +8,7 @@ on:
 env:
   VERSION: ${{ github.ref_name }}
   IMAGE_NAME: ghcr.io/${{ github.repository }}
+  RUST_VERSION: 1.85.0
 
 jobs:
   build:
@@ -50,6 +51,7 @@ jobs:
           outputs: type=image,"name=${{ env.IMAGE_NAME }}",push-by-digest=true,name-canonical=true,push=true
           build-args: |
             VERSION=${{ env.VERSION }}
+            RUST_VERSION=${{ env.RUST_VERSION }}
       - name: Export digest
         run: |
           mkdir -p ${{ runner.temp }}/digests

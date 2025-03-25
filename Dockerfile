@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 
-FROM --platform=$BUILDPLATFORM rust:1.83.0 AS base
+ARG RUST_VERSION
+FROM --platform=$BUILDPLATFORM rust:${RUST_VERSION} AS base
 
 RUN cargo install cargo-chef --version ^0.1
 
