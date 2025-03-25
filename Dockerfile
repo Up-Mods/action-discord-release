@@ -31,7 +31,7 @@ COPY . .
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     cargo build --release --bins
 
-FROM gcr.io/distroless/cc AS runtime
+FROM --platform=$BUILDPLATFORM gcr.io/distroless/cc AS runtime
 
 ARG RUST_LOG
 ENV RUST_LOG=${RUST_LOG:-info}
