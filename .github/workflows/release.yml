@@ -21,6 +21,8 @@ jobs:
             runner_os: ubuntu-24.04
           - platform: linux/arm64/v8
             runner_os: ubuntu-24.04-arm
+          - platform: darwin/arm64
+            runner_os: macos-15
     steps:
       - name: Setup Env
         run: |
