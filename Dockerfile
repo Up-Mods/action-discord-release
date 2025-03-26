@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG RUST_VERSION
+ARG RUST_VERSION=latest
 FROM --platform=$BUILDPLATFORM rust:${RUST_VERSION} AS base
 
 RUN cargo install cargo-chef --version ^0.1
