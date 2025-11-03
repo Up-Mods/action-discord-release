@@ -104,7 +104,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
         description.push("## Downloads:".to_string());
         let mut downloads = Vec::new();
         if !args.curseforge_project_id.is_empty() {
-            downloads.push(format!("<:curseforge:1231714919561429023> [CurseForge](https://www.curseforge.com/projects/{curseforge_project_id})", curseforge_project_id = args.curseforge_project_id));
+            downloads.push(format!("<:curseforge:1231714919561429023> [CurseForge](https://mods.cf/{curseforge_project_id})", curseforge_project_id = args.curseforge_project_id));
         }
         if !args.modrinth_project_id.is_empty() {
             downloads.push(format!("<:modrinth:1231714923503943710> [Modrinth](https://modrinth.com/mod/{modrinth_project_id})", modrinth_project_id = args.modrinth_project_id));
