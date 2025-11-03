@@ -6,7 +6,7 @@ edition = "2024"
 anyhow = "1.0.100"
 clap = { version = "4.5.51", features = ["derive"] }
 tracing = { version = "0.1.41", features = ["async-await"] }
-twilight-http = { version = "0.16.0", default-features = false, features = ["rustls-webpki-roots", "decompression"] }
+twilight-http = { version = "0.16.0", default-features = false, features = ["rustls-webpki-roots", "rustls-ring", "decompression"] }
 twilight-mention = "0.16.0"
 twilight-model = "0.16.0"
 twilight-util = { version = "0.16.0", features = ["builder", "link"] }
