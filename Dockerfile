@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG RUST_VERSION=latest
-FROM --platform=$BUILDPLATFORM rust:${RUST_VERSION} AS base
+FROM rust:${RUST_VERSION} AS base
 
 RUN cargo install cargo-chef --version ^0.1
 
@@ -32,7 +32,7 @@ COPY . .
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     cargo build --release --bins
 
-FROM --platform=$BUILDPLATFORM gcr.io/distroless/cc AS runtime
+FROM gcr.io/distroless/cc AS runtime
 
 ARG RUST_LOG
 ENV RUST_LOG=${RUST_LOG:-info}
