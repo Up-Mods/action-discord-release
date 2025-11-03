@@ -8,7 +8,7 @@ on:
 env:
   VERSION: ${{ github.ref_name }}
   IMAGE_NAME: ghcr.io/${{ github.repository }}
-  RUST_VERSION: 1.85.0
+  RUST_VERSION: 1.91.0
 
 jobs:
   build:

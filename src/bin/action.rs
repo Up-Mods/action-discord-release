@@ -1,7 +1,7 @@
 use anyhow::Context;
 use chrono::Utc;
 use clap::Parser;
-use regex::Regex;
+use regex_macro::regex;
 use std::fs::File;
 use std::io::Write;
 use std::time::Duration;
@@ -9,14 +9,14 @@ use std::{env, process};
 use tokio::time::sleep;
 use tracing::{debug, error, info};
 use tracing_subscriber::prelude::*;
-use tracing_subscriber::{fmt, EnvFilter};
+use tracing_subscriber::{EnvFilter, fmt};
+use twilight_http::Response;
 use twilight_http::client::ClientBuilder;
 use twilight_http::request::TryIntoRequest;
 use twilight_http::response::marker::EmptyBody;
-use twilight_http::Response;
 use twilight_mention::Mention;
-use twilight_model::id::marker::RoleMarker;
 use twilight_model::id::Id;
+use twilight_model::id::marker::RoleMarker;
 use twilight_model::util::Timestamp;
 use twilight_util::builder::embed::{EmbedBuilder, ImageSource};
 use twilight_util::link::webhook;
@@ -69,8 +69,6 @@ async fn wrapped_main() -> anyhow::Result<()> {
     let github_output_path =
         env::var("GITHUB_OUTPUT").expect("GITHUB_OUTPUT environment variable not set");
     let args = Inputs::parse();
-
-    let regex = Regex::new(r"[-+_](alpha)|(beta)|(rc)|(pre-?(release)?)|(snapshot)|(dev).*")?;
 
     let (id, token) = webhook::parse(args.discord_webhook_url.as_str())
         .with_context(|| format!("Failed to parse webhook URL: {}", args.discord_webhook_url))?;
@@ -136,8 +134,8 @@ async fn wrapped_main() -> anyhow::Result<()> {
     let request = client
         .execute_webhook(id, token)
         .avatar_url(WEBHOOK_AVATAR_URL)
-        .username(WEBHOOK_USERNAME)?
-        .embeds(&embeds)?
+        .username(WEBHOOK_USERNAME)
+        .embeds(&embeds)
         .try_into_request()?;
 
     let response: Response<EmptyBody> = client.request(request.clone()).await?;
@@ -155,7 +153,8 @@ async fn wrapped_main() -> anyhow::Result<()> {
 
     let should_ping_role: bool = if args.discord_ping_notification_role.is_empty() {
         // default: analyze version and don't ping if it's a pre-release
-        !regex.is_match(project_version.as_str())
+        regex!(r"[-+_](alpha)|(beta)|(rc)|(pre-?(release)?)|(snapshot)|(dev).*")
+            .is_match(&project_version)
     } else {
         // treat any value other than "false" as true
         !args
@@ -181,8 +180,8 @@ async fn wrapped_main() -> anyhow::Result<()> {
         client
             .execute_webhook(id, token)
             .avatar_url(WEBHOOK_AVATAR_URL)
-            .username(WEBHOOK_USERNAME)?
-            .content(role_id.mention().to_string().as_str())?
+            .username(WEBHOOK_USERNAME)
+            .content(role_id.mention().to_string().as_str())
             .await?;
     }
 
