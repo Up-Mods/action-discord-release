@@ -153,7 +153,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
 
     let should_ping_role: bool = if args.discord_ping_notification_role.is_empty() {
         // default: analyze version and don't ping if it's a pre-release
-        regex!(r"[-+_](alpha)|(beta)|(rc)|(pre-?(release)?)|(snapshot)|(dev).*")
+        !regex!(r"[-+_](alpha)|(beta)|(rc)|(pre-?(release)?)|(snapshot)|(dev).*")
             .is_match(&project_version)
     } else {
         // treat any value other than "false" as true
