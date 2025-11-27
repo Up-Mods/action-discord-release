@@ -79,7 +79,9 @@ async fn wrapped_main() -> anyhow::Result<()> {
         )
     })?;
 
-    let client = ClientBuilder::new().build();
+    let client = ClientBuilder::new()
+        .timeout(Duration::from_secs(30)) // default is too low for GH actions
+        .build();
 
     let (_, repo_name) = args.project_repository.split_once('/').with_context(|| {
         format!(
