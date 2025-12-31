@@ -1,4 +1,4 @@
-use anyhow::Context;
+use anyhow::{Context, bail};
 use chrono::Utc;
 use clap::Parser;
 use regex_macro::regex;
@@ -7,7 +7,7 @@ use std::io::Write;
 use std::time::Duration;
 use std::{env, process};
 use tokio::time::sleep;
-use tracing::{debug, error, info};
+use tracing::{debug, error, info, warn};
 use tracing_subscriber::prelude::*;
 use tracing_subscriber::{EnvFilter, fmt};
 use twilight_http::Response;
@@ -70,14 +70,22 @@ async fn wrapped_main() -> anyhow::Result<()> {
         env::var("GITHUB_OUTPUT").expect("GITHUB_OUTPUT environment variable not set");
     let args = Inputs::parse();
 
-    let (id, token) = webhook::parse(args.discord_webhook_url.as_str())
-        .with_context(|| format!("Failed to parse webhook URL: {}", args.discord_webhook_url))?;
-    let token = token.with_context(|| {
-        format!(
-            "webhook URL contained no token: {}",
-            args.discord_webhook_url
-        )
-    })?;
+    let mut webhook_url = args.discord_webhook_url.as_str();
+
+    if webhook_url.is_empty() {
+        bail!("No webhook URL provided!");
+    }
+
+    if webhook_url.ends_with("/github") {
+        warn!(
+            "Webhook URL ends in /github, this is not going to work as intended. Removing suffix.."
+        );
+        webhook_url = &webhook_url[..webhook_url.len() - "/github".len()];
+    }
+
+    let (id, token) = webhook::parse(webhook_url)
+        .with_context(|| format!("Failed to parse webhook URL: {webhook_url}"))?;
+    let token = token.with_context(|| format!("webhook URL contained no token: {webhook_url}"))?;
 
     let client = ClientBuilder::new()
         .timeout(Duration::from_secs(30)) // default is too low for GH actions
