@@ -59,7 +59,7 @@ async fn main() {
             info!("Success");
         }
         Err(err) => {
-            error!("ERROR: {:?}", err);
+            error!("ERROR: {:#}", err);
             process::exit(1);
         }
     }
