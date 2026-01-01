@@ -63,7 +63,8 @@ This is a list of ALL possible inputs, their default values, and whether they ar
     notification-role-id:
     
     # Whether to ping the notification role [OPTIONAL]
-    # If not specified, will make a best-effort attempt to parse the 'version' input to determine whether it is a prerelease.
+    # If not specified, will make a best-effort attempt to parse the 'version' input
+    # to determine whether it is a prerelease.
     # by default, will only ping if the version is not a prerelease.
     ping-notification-role:
     
