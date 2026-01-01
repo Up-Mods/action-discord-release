@@ -31,7 +31,7 @@ inputs:
     required: false
     default: 'Mod Updates'
   webhook-avatar-url:
-    description: 'The URL to use for the webhook's avatar image'
+    description: "The URL to use for the webhook's avatar image"
     required: false
     default: 'https://avatars.githubusercontent.com/u/141473891?s=128'
   thumbnail-url:
