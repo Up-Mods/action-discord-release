@@ -35,6 +35,10 @@ struct Inputs {
     // discord metadata
     #[clap(long = "discord-webhook-url")]
     discord_webhook_url: String,
+    #[clap(long = "discord-webhook-username")]
+    discord_webhook_username: String,
+    #[clap(long = "discord-webhook-avatar-url")]
+    discord_webhook_avatar_url: String,
     #[clap(long = "discord-thumbnail-url")]
     discord_thumbnail_url: String,
     #[clap(long = "discord-notification-role-id")]
@@ -179,17 +183,17 @@ async fn wrapped_main() -> anyhow::Result<()> {
 
     let embeds = vec![embed_builder.build()];
 
-    const WEBHOOK_AVATAR_URL: &str = "https://avatars.githubusercontent.com/u/141473891?s=256";
-    const WEBHOOK_USERNAME: &str = "Mod Updates";
-
     info!("Sending webhook message to Discord");
-    let request = client
-        .execute_webhook(id, token)
-        .avatar_url(WEBHOOK_AVATAR_URL)
-        .username(WEBHOOK_USERNAME)
-        .embeds(&embeds)
-        .try_into_request()?;
 
+    let mut webhook_builder = client.execute_webhook(id, token).embeds(&embeds);
+    if !args.discord_webhook_username.is_empty() {
+        webhook_builder = webhook_builder.username(&args.discord_webhook_username);
+    }
+    if !args.discord_webhook_avatar_url.is_empty() {
+        webhook_builder = webhook_builder.avatar_url(&args.discord_webhook_avatar_url);
+    }
+
+    let request = webhook_builder.try_into_request()?;
     let response: Response<EmptyBody> = client.request(request.clone()).await?;
 
     let mut out = File::create(github_output_path)?;
@@ -226,12 +230,18 @@ async fn wrapped_main() -> anyhow::Result<()> {
         }
 
         let role_id: Id<RoleMarker> = role_str.parse()?;
-        client
-            .execute_webhook(id, token)
-            .avatar_url(WEBHOOK_AVATAR_URL)
-            .username(WEBHOOK_USERNAME)
-            .content(role_id.mention().to_string().as_str())
-            .await?;
+        let role_mention = role_id.mention().to_string();
+        let mut webhook_builder = client.execute_webhook(id, token).content(&role_mention);
+
+        if !args.discord_webhook_username.is_empty() {
+            webhook_builder = webhook_builder.username(&args.discord_webhook_username);
+        }
+
+        if !args.discord_webhook_avatar_url.is_empty() {
+            webhook_builder = webhook_builder.avatar_url(&args.discord_webhook_avatar_url);
+        }
+
+        webhook_builder.await?;
     }
 
     Ok(())

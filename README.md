@@ -43,6 +43,15 @@ This is a list of ALL possible inputs, their default values, and whether they ar
     # Note that this should NOT end in '/github'.
     webhook-url:
     
+    # The display name for the webhook [OPTIONAL]
+    # defaults to 'Mod Updates'
+    webhook-username:
+    
+    # The URL to use for the webhook's avatar image [OPTIONAL]
+    # defaults to https://avatars.githubusercontent.com/u/141473891?s=128
+    # A size of at least 128x128 is recommended.
+    webhook-avatar-url:
+    
     # URL to find the project thumbnail at [OPTIONAL]
     # A size of at least 128x128 is recommended.
     thumbnail-url:

@@ -26,6 +26,14 @@ inputs:
   webhook-url:
     description: 'The webhook URL to send the message to'
     required: true
+  webhook-username:
+    description: 'The display name for the webhook'
+    required: false
+    default: 'Mod Updates'
+  webhook-avatar-url:
+    description: 'The URL to use for the webhook's avatar image'
+    required: false
+    default: 'https://avatars.githubusercontent.com/u/141473891?s=128'
   thumbnail-url:
     description: 'The URL of the thumbnail to use'
     required: false
@@ -74,6 +82,8 @@ runs:
     - "--project-version=${{ inputs.version }}"
     - "--project-sourcecode-url=${{ inputs.sourcecode-url }}"
     - "--discord-webhook-url=${{ inputs.webhook-url }}"
+    - "--discord-webhook-username=${{ inputs.webhook-username }}"
+    - "--discord-webhook-avatar-url=${{ inputs.webhook-avatar-url }}"
     - "--discord-thumbnail-url=${{ inputs.thumbnail-url }}"
     - "--discord-notification-role-id=${{ inputs.notification-role-id }}"
     - "--discord-ping-notification-role=${{ inputs.ping-notification-role }}"
