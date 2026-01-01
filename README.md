@@ -22,7 +22,7 @@ This is a list of ALL possible inputs, their default values, and whether they ar
 > A note on emoji IDs for discord:
 >
 > To use built-in emoji, use `:emoji:` or their unicode representation, for example `:fire:`​
-> For custom emoji, use the format `<emoji:ID>`, for example `<:github:1231714921331425310>` (You can find an emoji's ID by right clicking it in the emoji picker while having developer mod enabled)
+> For custom emoji, use the format `<:emoji:ID>`, for example `<:github:1231714921331425310>` (You can find an emoji's ID by right clicking it in the emoji picker while having developer mod enabled)
 
 ```yml
 - uses: Up-Mods/action-discord-release@main
