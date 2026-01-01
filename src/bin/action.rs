@@ -225,10 +225,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
         info!("Pinging notification role");
 
         let mut role_str = args.discord_notification_role_id;
-        if role_str.is_empty() {
-            role_str = "918884941461352469".to_string();
-        }
-        if role_str.starts_with("<@&") {
+        if role_str.starts_with("<@&") && role_str.ends_with('>') {
             role_str = role_str[3..role_str.len() - 1].to_string();
         }
 
@@ -247,8 +244,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
 fn build_prefixed_url(title: &str, url: &str, optional_emoji: &str) -> String {
     let mut result = String::new();
     if !optional_emoji.is_empty() {
-        let emoji = format!("<{optional_emoji}>");
-        result.push_str(&emoji);
+        result.push_str(&optional_emoji);
         result.push(' ');
     }
 
