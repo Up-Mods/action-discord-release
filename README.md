@@ -55,22 +55,22 @@ This is a list of ALL possible inputs, their default values, and whether they ar
     # URL to find the project thumbnail at [OPTIONAL]
     # A size of at least 128x128 is recommended.
     thumbnail-url:
-	
-	# The role ID to ping for notifications [OPTIONAL]
-	# defaults to '918884941461352469' (you probably want to change this)
-	# If specified, this MUST be a role ID, not a user ID!
-	# Special notation must be used for '@everyone' or '@here'!
+    
+    # The role ID to ping for notifications [OPTIONAL]
+    # defaults to '918884941461352469' (you probably want to change this)
+    # If specified, this MUST be a role ID, not a user ID!
+    # Special notation must be used for '@everyone' or '@here'!
     notification-role-id:
     
     # Whether to ping the notification role [OPTIONAL]
     # If not specified, will make a best-effort attempt to parse the 'version' input to determine whether it is a prerelease.
     # by default, will only ping if the version is not a prerelease.
     ping-notification-role:
-	
+    
     # The ID of the project on Curseforge [OPTIONAL]
     curseforge-project-id:
-	
-	# The ID of the project on Modrinth [OPTIONAL]
+    
+    # The ID of the project on Modrinth [OPTIONAL]
     modrinth-project-id:
     
     # The emoji to use for the source code link [OPTIONAL]
