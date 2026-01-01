@@ -40,25 +40,25 @@ inputs:
     required: false
 
   # publishing platforms
+  curseforge-project-id:
+    description: 'The project ID on CurseForge to link to'
   modrinth-project-id:
     description: 'The project ID on Modrinth to link to'
     required: false
-  curseforge-project-id:
-    description: 'The project ID on CurseForge to link to'
 
   # formatting
-  sourcecode-emoji-id:
-    description: 'The ID of the emoji to use for the source code link'
+  sourcecode-emoji:
+    description: 'The emoji to use for the source code link'
     required: false
-    default: ':github:1231714921331425310'
-  curseforge-emoji-id:
-    description: 'The ID of the emoji to use for Curseforge'
+    default: '<:github:1231714921331425310>'
+  curseforge-emoji:
+    description: 'The emoji to use for Curseforge'
     required: false
-    default: ':curseforge:1231714919561429023'
-  modrinth-emoji-id:
-    description: 'The ID of the emoji to use for Modrinth'
+    default: '<:curseforge:1231714919561429023>'
+  modrinth-emoji:
+    description: 'The emoji to use for Modrinth'
     required: false
-    default: ':modrinth:1231714923503943710'
+    default: '<:modrinth:1231714923503943710>'
 
 outputs:
   message:
@@ -79,6 +79,6 @@ runs:
     - "--discord-ping-notification-role=${{ inputs.ping-notification-role }}"
     - "--curseforge-project-id=${{ inputs.curseforge-project-id }}"
     - "--modrinth-project-id=${{ inputs.modrinth-project-id }}"
-    - "--sourcecode-emoji-id=${{ inputs.sourcecode-emoji-id }}"
-    - "--curseforge-emoji-id=${{ inputs.curseforge-emoji-id }}"
-    - "--modrinth-emoji-id=${{ inputs.modrinth-emoji-id }}"
+    - "--sourcecode-emoji=${{ inputs.sourcecode-emoji }}"
+    - "--curseforge-emoji=${{ inputs.curseforge-emoji }}"
+    - "--modrinth-emoji=${{ inputs.modrinth-emoji }}"

@@ -50,12 +50,12 @@ struct Inputs {
     modrinth_project_id: String,
 
     // formatting
-    #[clap(long = "sourcecode-emoji-id")]
-    sourcecode_emoji_id: String,
-    #[clap(long = "curseforge-emoji-id")]
-    curseforge_emoji_id: String,
-    #[clap(long = "modrinth-emoji-id")]
-    modrinth_emoji_id: String,
+    #[clap(long = "sourcecode-emoji")]
+    sourcecode_emoji: String,
+    #[clap(long = "curseforge-emoji")]
+    curseforge_emoji: String,
+    #[clap(long = "modrinth-emoji")]
+    modrinth_emoji: String,
 }
 
 #[tokio::main]
@@ -141,7 +141,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
             downloads.push(build_prefixed_url(
                 "Curseforge",
                 &url,
-                &args.curseforge_emoji_id,
+                &args.curseforge_emoji,
             ));
         }
         if !args.modrinth_project_id.is_empty() {
@@ -149,11 +149,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
                 "https://modrinth.com/mod/{project_id}",
                 project_id = args.modrinth_project_id
             );
-            downloads.push(build_prefixed_url(
-                "Modrinth",
-                &url,
-                &args.modrinth_emoji_id,
-            ));
+            downloads.push(build_prefixed_url("Modrinth", &url, &args.modrinth_emoji));
         }
         description.push(downloads.join(" | "));
     }
@@ -166,7 +162,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
         description.push(build_prefixed_url(
             "Source Code",
             &args.project_sourcecode_url,
-            &args.sourcecode_emoji_id,
+            &args.sourcecode_emoji,
         ));
     }
 
