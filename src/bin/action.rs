@@ -113,7 +113,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
                     args.project_sourcecode_url
                 )
             })?;
-        warn!("Project name not specified! Assuming '{name}' from sourcecode URL!");
+        debug!("Project name not specified! Assuming '{name}' from sourcecode URL.");
 
         name
     } else {
