@@ -20,7 +20,7 @@ inputs:
   sourcecode-url:
     description: 'The source code repository to link to'
     required: false
-    default: 'https://github.com/${{ github.repository }}'
+    default: '${{ github.repositoryUrl }}'
 
   # discord metadata
   webhook-url:
