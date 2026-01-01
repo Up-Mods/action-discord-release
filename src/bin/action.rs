@@ -102,19 +102,20 @@ async fn wrapped_main() -> anyhow::Result<()> {
         .timeout(Duration::from_secs(30)) // default is too low for GH actions
         .build();
 
-    //FIXME doesnt work anymore
-    let (_, repo_name) = args
-        .project_sourcecode_url
-        .split_once('/')
-        .with_context(|| {
-            format!(
-                "Failed to parse repository name from: {}",
-                args.project_sourcecode_url
-            )
-        })?;
-
     let project_name = if args.project_name.is_empty() {
-        repo_name
+        let name = args
+            .project_sourcecode_url
+            .split('/')
+            .next_back()
+            .with_context(|| {
+                format!(
+                    "Failed to parse repository name from: {}",
+                    args.project_sourcecode_url
+                )
+            })?;
+        warn!("Project name not specified! Assuming '{name}' from sourcecode URL!");
+
+        name
     } else {
         &args.project_name
     };
