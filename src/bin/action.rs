@@ -24,19 +24,15 @@ use twilight_util::link::webhook;
 #[derive(Debug, Parser)]
 #[clap(version, about, author)]
 struct Inputs {
-    #[clap(long = "modrinth-project-id")]
-    modrinth_project_id: String,
-
-    #[clap(long = "curseforge-project-id")]
-    curseforge_project_id: String,
-
+    // project info
     #[clap(long = "project-name")]
     project_name: String,
     #[clap(long = "project-version")]
     project_version: String,
-    #[clap(long = "project-repository")]
-    project_repository: String,
+    #[clap(long = "project-sourcecode-url")]
+    project_sourcecode_url: String,
 
+    // discord metadata
     #[clap(long = "discord-webhook-url")]
     discord_webhook_url: String,
     #[clap(long = "discord-thumbnail-url")]
@@ -45,6 +41,21 @@ struct Inputs {
     discord_notification_role_id: String,
     #[clap(long = "discord-ping-notification-role")]
     discord_ping_notification_role: String,
+
+    // TODO maven/custom direct downloads?
+    // publishing platforms
+    #[clap(long = "curseforge-project-id")]
+    curseforge_project_id: String,
+    #[clap(long = "modrinth-project-id")]
+    modrinth_project_id: String,
+
+    // formatting
+    #[clap(long = "sourcecode-emoji-id")]
+    sourcecode_emoji_id: String,
+    #[clap(long = "curseforge-emoji-id")]
+    curseforge_emoji_id: String,
+    #[clap(long = "modrinth-emoji-id")]
+    modrinth_emoji_id: String,
 }
 
 #[tokio::main]
@@ -91,12 +102,16 @@ async fn wrapped_main() -> anyhow::Result<()> {
         .timeout(Duration::from_secs(30)) // default is too low for GH actions
         .build();
 
-    let (_, repo_name) = args.project_repository.split_once('/').with_context(|| {
-        format!(
-            "Failed to parse repository name from: {}",
-            args.project_repository
-        )
-    })?;
+    //FIXME doesnt work anymore
+    let (_, repo_name) = args
+        .project_sourcecode_url
+        .split_once('/')
+        .with_context(|| {
+            format!(
+                "Failed to parse repository name from: {}",
+                args.project_sourcecode_url
+            )
+        })?;
 
     let project_name = if args.project_name.is_empty() {
         repo_name
@@ -110,18 +125,48 @@ async fn wrapped_main() -> anyhow::Result<()> {
         format!("# {project_name} {project_version}",),
         String::new(),
     ];
-    if !args.curseforge_project_id.is_empty() || !args.modrinth_project_id.is_empty() {
+
+    let has_downloads_section =
+        !args.curseforge_project_id.is_empty() || !args.modrinth_project_id.is_empty();
+
+    if has_downloads_section {
         description.push("## Downloads:".to_string());
         let mut downloads = Vec::new();
         if !args.curseforge_project_id.is_empty() {
-            downloads.push(format!("<:curseforge:1231714919561429023> [CurseForge](https://mods.cf/{curseforge_project_id})", curseforge_project_id = args.curseforge_project_id));
+            let url = format!(
+                "https://mods.cf/{project_id}",
+                project_id = args.curseforge_project_id
+            );
+            downloads.push(build_prefixed_url(
+                "Curseforge",
+                &url,
+                &args.curseforge_emoji_id,
+            ));
         }
         if !args.modrinth_project_id.is_empty() {
-            downloads.push(format!("<:modrinth:1231714923503943710> [Modrinth](https://modrinth.com/mod/{modrinth_project_id})", modrinth_project_id = args.modrinth_project_id));
+            let url = format!(
+                "https://modrinth.com/mod/{project_id}",
+                project_id = args.modrinth_project_id
+            );
+            downloads.push(build_prefixed_url(
+                "Modrinth",
+                &url,
+                &args.modrinth_emoji_id,
+            ));
         }
         description.push(downloads.join(" | "));
-        description.push(String::new());
-        description.push(format!("<:github:1231714921331425310> [Source Code](https://github.com/{qualified_github_repository})", qualified_github_repository = args.project_repository));
+    }
+
+    if !args.project_sourcecode_url.is_empty() {
+        if has_downloads_section {
+            description.push(String::new());
+        }
+
+        description.push(build_prefixed_url(
+            "Source Code",
+            &args.project_sourcecode_url,
+            &args.sourcecode_emoji_id,
+        ));
     }
 
     let mut embed_builder = EmbedBuilder::new()
@@ -196,4 +241,18 @@ async fn wrapped_main() -> anyhow::Result<()> {
     }
 
     Ok(())
+}
+
+fn build_prefixed_url(title: &str, url: &str, optional_emoji: &str) -> String {
+    let mut result = String::new();
+    if !optional_emoji.is_empty() {
+        let emoji = format!("<{optional_emoji}>");
+        result.push_str(&emoji);
+        result.push(' ');
+    }
+
+    let link = format!("[{title}]({url})");
+    result.push_str(&link);
+
+    result
 }

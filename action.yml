@@ -9,15 +9,7 @@ branding:
   color: 'blue'
 
 inputs:
-  modrinth-project-id:
-    description: 'The project ID on Modrinth to link to'
-    required: false
-  curseforge-project-id:
-    description: 'The project ID on CurseForge to link to'
-  repository:
-    description: 'The source repository to link to'
-    required: false
-    default: '${{ github.repository }}'
+  # project info
   project-name:
     description: 'The name of the project'
     required: false
@@ -25,20 +17,48 @@ inputs:
     description: 'The display version'
     required: false
     default: '${{ github.ref_name }}'
+  sourcecode-url:
+    description: 'The source code repository to link to'
+    required: false
+    default: 'https://github.com/${{ github.repository }}'
+
+  # discord metadata
   webhook-url:
     description: 'The webhook URL to send the message to'
     required: true
   thumbnail-url:
     description: 'The URL of the thumbnail to use'
     required: false
+  notification-role-id:
+    description: 'The role ID to ping for notifications'
+    required: false
+    default: '918884941461352469'
   ping-notification-role:
     description:
       'Whether to ping the notification role, by default will only ping if the
       version is not a pre-release'
     required: false
-  notification-role-id:
-    description: 'The role ID to ping'
+
+  # publishing platforms
+  modrinth-project-id:
+    description: 'The project ID on Modrinth to link to'
     required: false
+  curseforge-project-id:
+    description: 'The project ID on CurseForge to link to'
+
+  # formatting
+  sourcecode-emoji-id:
+    description: 'The ID of the emoji to use for the source code link'
+    required: false
+    default: ':github:1231714921331425310'
+  curseforge-emoji-id:
+    description: 'The ID of the emoji to use for Curseforge'
+    required: false
+    default: ':curseforge:1231714919561429023'
+  modrinth-emoji-id:
+    description: 'The ID of the emoji to use for Modrinth'
+    required: false
+    default: ':modrinth:1231714923503943710'
 
 outputs:
   message:
@@ -50,12 +70,15 @@ runs:
   using: 'docker'
   image: 'docker://ghcr.io/up-mods/action-discord-release:main'
   args:
-    - "--modrinth-project-id=${{ inputs.modrinth-project-id }}"
-    - "--curseforge-project-id=${{ inputs.curseforge-project-id }}"
     - "--project-name=${{ inputs.project-name }}"
     - "--project-version=${{ inputs.version }}"
-    - "--project-repository=${{ inputs.repository }}"
+    - "--project-sourcecode-url=${{ inputs.sourcecode-url }}"
     - "--discord-webhook-url=${{ inputs.webhook-url }}"
     - "--discord-thumbnail-url=${{ inputs.thumbnail-url }}"
     - "--discord-notification-role-id=${{ inputs.notification-role-id }}"
     - "--discord-ping-notification-role=${{ inputs.ping-notification-role }}"
+    - "--curseforge-project-id=${{ inputs.curseforge-project-id }}"
+    - "--modrinth-project-id=${{ inputs.modrinth-project-id }}"
+    - "--sourcecode-emoji-id=${{ inputs.sourcecode-emoji-id }}"
+    - "--curseforge-emoji-id=${{ inputs.curseforge-emoji-id }}"
+    - "--modrinth-emoji-id=${{ inputs.modrinth-emoji-id }}"
