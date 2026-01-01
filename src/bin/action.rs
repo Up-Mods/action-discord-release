@@ -240,7 +240,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
 fn build_prefixed_url(title: &str, url: &str, optional_emoji: &str) -> String {
     let mut result = String::new();
     if !optional_emoji.is_empty() {
-        result.push_str(&optional_emoji);
+        result.push_str(optional_emoji);
         result.push(' ');
     }
 
