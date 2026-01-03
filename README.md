@@ -48,7 +48,7 @@ This is a list of ALL possible inputs, their default values, and whether they ar
     webhook-username:
     
     # The URL to use for the webhook's avatar image [OPTIONAL]
-    # defaults to https://avatars.githubusercontent.com/u/141473891?s=128
+    # If not set will use whatever is set as avatar for the webhook on your discord server.
     # A size of at least 128x128 is recommended.
     webhook-avatar-url:
     

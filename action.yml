@@ -33,7 +33,6 @@ inputs:
   webhook-avatar-url:
     description: "The URL to use for the webhook's avatar image"
     required: false
-    default: 'https://avatars.githubusercontent.com/u/141473891?s=128'
   thumbnail-url:
     description: 'The URL of the thumbnail to use'
     required: false
