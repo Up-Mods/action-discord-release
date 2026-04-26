@@ -96,7 +96,7 @@ jobs:
           images: ${{ env.IMAGE_NAME }}
 
       - name: Download digests
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           path: ${{ runner.temp }}/digests
           pattern: digests-*
