@@ -3,7 +3,6 @@ name = "action-discord-release"
 edition = "2024"
 
 [dependencies]
-anyhow = "1.0.100"
 clap = { version = "4.6.1", features = ["derive"] }
 tracing = { version = "0.1.44", features = ["async-await"] }
 twilight-http = { version = "0.17.1", default-features = false, features = ["rustls-webpki-roots", "decompression"] }
