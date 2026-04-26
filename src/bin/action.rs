@@ -81,6 +81,8 @@ async fn main() {
 }
 
 async fn wrapped_main() -> anyhow::Result<()> {
+    rustls::crypto::aws_lc_rs::default_provider().install_default().expect("Unable to install crypto provider!");
+
     let github_output_path =
         env::var("GITHUB_OUTPUT").expect("GITHUB_OUTPUT environment variable not set");
     let args = Inputs::parse();
