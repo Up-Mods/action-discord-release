@@ -1,7 +1,9 @@
-use anyhow::{Context, bail};
 use chrono::Utc;
 use clap::Parser;
 use regex_macro::regex;
+use rootcause::bail;
+use rootcause::option_ext::OptionExt;
+use rootcause::prelude::ResultExt;
 use std::fs::File;
 use std::io::Write;
 use std::time::Duration;
@@ -80,8 +82,10 @@ async fn main() {
     }
 }
 
-async fn wrapped_main() -> anyhow::Result<()> {
-    rustls::crypto::aws_lc_rs::default_provider().install_default().expect("Unable to install crypto provider!");
+async fn wrapped_main() -> rootcause::Result<()> {
+    rustls::crypto::aws_lc_rs::default_provider()
+        .install_default()
+        .expect("Unable to install crypto provider!");
 
     let github_output_path =
         env::var("GITHUB_OUTPUT").expect("GITHUB_OUTPUT environment variable not set");
@@ -101,8 +105,8 @@ async fn wrapped_main() -> anyhow::Result<()> {
     }
 
     let (id, token) = webhook::parse(webhook_url)
-        .with_context(|| format!("Failed to parse webhook URL: {webhook_url}"))?;
-    let token = token.with_context(|| format!("webhook URL contained no token: {webhook_url}"))?;
+        .context_with(|| format!("Failed to parse webhook URL: {webhook_url}"))?;
+    let token = token.context_with(|| format!("webhook URL contained no token: {webhook_url}"))?;
 
     let client = ClientBuilder::new()
         .timeout(Duration::from_secs(30)) // default is too low for GH actions
@@ -113,7 +117,7 @@ async fn wrapped_main() -> anyhow::Result<()> {
             .project_sourcecode_url
             .split('/')
             .next_back()
-            .with_context(|| {
+            .context_with(|| {
                 format!(
                     "Failed to parse repository name from: {}",
                     args.project_sourcecode_url
