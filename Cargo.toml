@@ -10,7 +10,7 @@ twilight-http = { version = "0.16.0", default-features = false, features = ["rus
 twilight-mention = "0.16.0"
 twilight-model = "0.16.0"
 twilight-util = { version = "0.16.0", features = ["builder", "link"] }
-tokio = { version = "1.48.0", features = ["full"] }
+tokio = { version = "1.50.0", features = ["full"] }
 tracing-subscriber = { version = "0.3.20", features = ["env-filter", "serde", "serde_json", "chrono"] }
 chrono = { version = "0.4.44", features = ["serde"] }
 regex-macro = "0.3.0"
