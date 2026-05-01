@@ -13,5 +13,5 @@ tokio = { version = "1.52.1", features = ["full"] }
 tracing-subscriber = { version = "0.3.23", features = ["env-filter", "serde", "serde_json", "chrono"] }
 chrono = { version = "0.4.44", features = ["serde"] }
 regex-macro = "0.3.0"
-rustls = "0.23.39"
+rustls = "0.23.40"
 rootcause = "0.12.1"
